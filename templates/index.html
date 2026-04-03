@@ -1,163 +1,185 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>AI Blog Generator</title>
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Blog Generator</title>
 
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Segoe UI", sans-serif;
-        background: radial-gradient(circle at top, #0f172a, #020617);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #e5e7eb;
-      }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #e5e7eb;
+    }
 
-      .container {
-        width: 100%;
-        max-width: 540px;
-        background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(16px);
-        border-radius: 20px;
-        padding: 36px;
-        box-shadow: 0 0 0 1px rgba(99,102,241,0.3),
-                    0 30px 80px rgba(0,0,0,0.8);
-      }
+    .container {
+      width: 100%;
+      max-width: 540px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 0 0 1px rgba(99,102,241,0.3),
+                  0 30px 80px rgba(0,0,0,0.8);
+    }
 
-      h1 {
-        text-align: center;
-        font-size: 30px;
-        font-weight: 800;
-        margin-bottom: 26px;
-        background: linear-gradient(90deg, #818cf8, #22d3ee);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #818cf8, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-      form {
-        display: grid;
-        gap: 14px;
-      }
+    .nav {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-      input,
-      textarea,
-      select {
-        width: 100%;
-        padding: 14px 15px;
-        border-radius: 12px;
-        border: 1px solid rgba(148,163,184,0.25);
-        background: rgba(2,6,23,0.6);
-        color: #e5e7eb;
-        font-size: 14px;
-        transition: 0.25s ease;
-      }
+    .nav a {
+      text-decoration: none;
+      color: #22d3ee;
+      font-weight: 600;
+      font-size: 14px;
+    }
 
-      textarea {
-        min-height: 100px;
-        resize: none;
-      }
+    .nav a:hover {
+      text-decoration: underline;
+    }
 
-      input:focus,
-      textarea:focus,
-      select:focus {
-        outline: none;
-        border-color: #22d3ee;
-        box-shadow: 0 0 0 3px rgba(34,211,238,0.35),
-                    0 0 20px rgba(34,211,238,0.3);
-      }
+    form {
+      display: grid;
+      gap: 14px;
+    }
 
-      ::placeholder {
-        color: #94a3b8;
-      }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.25);
+      background: rgba(2,6,23,0.6);
+      color: #e5e7eb;
+      font-size: 14px;
+      transition: 0.25s ease;
+    }
 
-      select {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%2322d3ee' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 14px center;
-        background-size: 18px;
-      }
+    textarea {
+      min-height: 100px;
+      resize: none;
+    }
 
-      button {
-        margin-top: 6px;
-        padding: 14px;
-        border-radius: 14px;
-        border: none;
-        font-size: 15px;
-        font-weight: 700;
-        cursor: pointer;
-        color: #020617;
-        background: linear-gradient(90deg, #22d3ee, #818cf8);
-        transition: 0.3s ease;
-      }
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #22d3ee;
+      box-shadow: 0 0 0 3px rgba(34,211,238,0.35),
+                  0 0 20px rgba(34,211,238,0.3);
+    }
 
-      button:hover {
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 0 25px rgba(34,211,238,0.6);
-      }
+    ::placeholder {
+      color: #94a3b8;
+    }
 
-      .output {
-        display: none;
-        margin-top: 24px;
-        background: rgba(2,6,23,0.7);
-        padding: 22px;
-        border-radius: 14px;
-        line-height: 1.75;
-        border: 1px solid rgba(34,211,238,0.25);
-      }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%2322d3ee' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 18px;
+    }
 
-      .output.show {
-        display: block;
-      }
+    button {
+      margin-top: 6px;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #020617;
+      background: linear-gradient(90deg, #22d3ee, #818cf8);
+      transition: 0.3s ease;
+    }
 
-      .output h2 {
-        margin-top: 0;
-        background: linear-gradient(90deg, #818cf8, #22d3ee);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-    </style>
-  </head>
+    button:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 25px rgba(34,211,238,0.6);
+    }
 
-  <body>
-    <div class="container">
-      <h1>AI Blog Generator</h1>
+    .output {
+      display: none;
+      margin-top: 24px;
+      background: rgba(2,6,23,0.7);
+      padding: 22px;
+      border-radius: 14px;
+      line-height: 1.75;
+      border: 1px solid rgba(34,211,238,0.25);
+    }
 
-      <form method="POST">
-        <input type="text" name="topic" placeholder="Blog Topic" required />
-        <textarea name="purpose" placeholder="Blog Description"></textarea>
-        <input type="text" name="audience" placeholder="Target Audience" />
+    .output.show {
+      display: block;
+    }
 
-        <select name="tone">
-          <option>Formal</option>
-          <option>Professional</option>
-          <option>Conversational</option>
-        </select>
+    .output h2 {
+      margin-top: 0;
+      background: linear-gradient(90deg, #818cf8, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
 
-        <select name="length">
-          <option>Short</option>
-          <option selected>Medium</option>
-          <option>Long</option>
-        </select>
+<body>
+  <div class="container">
 
-        <input type="text" name="keywords" placeholder="Keywords (optional)" />
+    <h1>AI Blog Generator</h1>
 
-        <button type="submit">⚡ Generate Blog</button>
-      </form>
-
-      <!-- Output -->
-      <div class="output {% if blog %}show{% endif %}">
-        <h2>Generated Blog</h2>
-        {{ blog | safe }}
-
-      </div>
+    <!-- ✅ NEW NAVIGATION -->
+    <div class="nav">
+      <a href="/blogs">📚 View Saved Blogs</a>
     </div>
-  </body>
+
+    <form method="POST">
+      <input type="text" name="topic" placeholder="Blog Topic" required />
+      <textarea name="purpose" placeholder="Blog Description"></textarea>
+      <input type="text" name="audience" placeholder="Target Audience" />
+
+      <select name="tone">
+        <option>Formal</option>
+        <option selected>Professional</option>
+        <option>Conversational</option>
+      </select>
+
+      <select name="length">
+        <option>Short</option>
+        <option selected>Medium</option>
+        <option>Long</option>
+      </select>
+
+      <input type="text" name="keywords" placeholder="Keywords (optional)" />
+
+      <button type="submit">⚡ Generate Blog</button>
+    </form>
+
+    <!-- Output -->
+    <div class="output {% if blog %}show{% endif %}">
+      <h2>Generated Blog</h2>
+      {{ blog | safe }}
+    </div>
+
+  </div>
+</body>
 </html>

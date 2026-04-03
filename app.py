@@ -1,13 +1,13 @@
 import markdown
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 import os
+import sqlite3
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-# ✅ NEW
+# ✅ RATE LIMITER
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
 
 load_dotenv()
 
@@ -23,7 +23,7 @@ limiter = Limiter(
     default_limits=["10 per minute"]
 )
 
-# ✅ FIXED GEMINI CONFIG
+# ✅ GEMINI CONFIG
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 model = genai.GenerativeModel(
@@ -31,7 +31,31 @@ model = genai.GenerativeModel(
     system_instruction="You are an expert professional blog writer."
 )
 
+# =========================
+# 🟢 DATABASE SETUP
+# =========================
+def get_db_connection():
+    conn = sqlite3.connect("database.db")
+    conn.row_factory = sqlite3.Row
+    return conn
 
+def init_db():
+    conn = get_db_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS blogs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            content TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
+
+# =========================
+# 🟢 AI FUNCTIONS
+# =========================
 def build_prompt(data: dict) -> str:
     prompt = f"""
 Write a {data['tone']} blog.
@@ -69,13 +93,15 @@ def generate_blog(prompt: str) -> str:
 
     return response.text.strip()
 
-
+# =========================
+# 🟢 CREATE + GENERATE
+# =========================
 @app.route("/", methods=["GET", "POST"])
 @limiter.limit("3 per minute")
 def index():
     blog = ""
+    title = ""
 
-    # ✅ SESSION CONTROL
     if "count" not in session:
         session["count"] = 0
 
@@ -100,13 +126,72 @@ def index():
             try:
                 prompt = build_prompt(data)
                 raw_blog = generate_blog(prompt)
+
+                # Extract title (first line)
+                title = data["topic"]
+
                 blog = markdown.markdown(raw_blog)
+
+                # ✅ SAVE TO DATABASE
+                conn = get_db_connection()
+                conn.execute(
+                    "INSERT INTO blogs (title, content) VALUES (?, ?)",
+                    (title, raw_blog)
+                )
+                conn.commit()
+                conn.close()
 
             except Exception as e:
                 blog = f"❌ Blog generation failed: {str(e)}"
 
     return render_template("index.html", blog=blog)
 
+# =========================
+# 🟢 READ (VIEW BLOGS)
+# =========================
+@app.route("/blogs")
+def view_blogs():
+    conn = get_db_connection()
+    blogs = conn.execute("SELECT * FROM blogs").fetchall()
+    conn.close()
+    return render_template("blogs.html", blogs=blogs)
 
+# =========================
+# 🟢 UPDATE (EDIT BLOG)
+# =========================
+@app.route("/edit/<int:id>", methods=["GET", "POST"])
+def edit_blog(id):
+    conn = get_db_connection()
+
+    if request.method == "POST":
+        title = request.form["title"]
+        content = request.form["content"]
+
+        conn.execute(
+            "UPDATE blogs SET title=?, content=? WHERE id=?",
+            (title, content, id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect(url_for("view_blogs"))
+
+    blog = conn.execute("SELECT * FROM blogs WHERE id=?", (id,)).fetchone()
+    conn.close()
+    return render_template("edit.html", blog=blog)
+
+# =========================
+# 🟢 DELETE
+# =========================
+@app.route("/delete/<int:id>")
+def delete_blog(id):
+    conn = get_db_connection()
+    conn.execute("DELETE FROM blogs WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for("view_blogs"))
+
+# =========================
+# 🟢 RUN APP
+# =========================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

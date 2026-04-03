@@ -1,0 +1,12 @@
+<h1>Saved Blogs</h1>
+
+<a href="/">⬅ Back</a>
+
+{% for blog in blogs %}
+    <h2>{{ blog['title'] }}</h2>
+    <p>{{ blog['content'] }}</p>
+
+    <a href="/edit/{{ blog['id'] }}">Edit</a>
+    <a href="/delete/{{ blog['id'] }}">Delete</a>
+    <hr>
+{% endfor %}
