@@ -1,243 +1,213 @@
-# AI Blog Generator Agent (Web App)
+# 📌 AI Blog Generator Agent (Web App)
 
-A hackathon project that implements a web-based **AI Blog Generator Agent** capable of generating complete, structured blog articles with **AI-generated images aligned to each paragraph**.
+AI Blog Generator is a web application designed to automate the end-to-end creation of structured blog content. The system accepts a user-defined topic and contextual parameters, then leverages AI to produce a coherent, well-organized article accompanied by semantically relevant images for each section.
 
-The application converts a single blog idea into a fully formatted article with relevant visuals, providing an end-to-end AI-powered content creation experience.
-
-**Python | Flask | HTML | CSS | AI Text Generation**
+The application addresses the challenge of content creation at scale by eliminating the need for manual writing and visual sourcing. It is built with a modular Flask backend, a responsive web interface, and integrates AI-based text and image generation into a unified workflow.
 
 ---
 
-## Problem Statement
+# 🎯 What It Does
 
-Build a web-based AI agent that generates complete blog articles from user inputs.  
-Each blog must include AI-generated images aligned with the corresponding paragraphs.
+Most blog creation tools either assist with writing or provide visuals — rarely both. This application combines both capabilities seamlessly:
 
----
-
-## Objective
-
-To design and develop a web application that transforms a blog idea into a structured article enriched with AI-generated images, ensuring semantic alignment between text and visuals.
-
----
-
-## Inputs
-
-- Blog Topic  
-- Blog Description (detailed context of the blog)  
-- Target Audience  
-- Tone (Formal / Informal / Technical / Narrative)  
-- Blog Length (Short / Medium / Long)  
-- Keywords (Optional)
+* Accepts a topic, description, audience, tone, and length as input
+* Generates a complete blog with title, introduction, and structured sections
+* Creates AI-generated images for every paragraph, placed contextually
+* Displays a live preview on the same page
+* Allows exporting the blog for external use
 
 ---
 
-## Outputs
+# 🖊️ Inputs
 
-- Blog Title  
-- Structured Blog Content  
-  - Introduction  
-  - Multiple sections / paragraphs  
-- AI-Generated Images  
-  - At least one image per paragraph  
-  - Image placed below the corresponding paragraph  
-- Blog Preview Page  
-- Exported Blog (HTML / Markdown / PDF – any one)
-
----
-
-## Functional Requirements
-
-- Generate original, coherent blog content  
-- Generate AI-based images using paragraph-level context  
-- Maintain correct paragraph-to-image alignment  
-- Web UI for input submission and result display  
-- Option to regenerate:
-  - Entire blog  
-  - Individual paragraphs or images  
+| Field               | Description                               |
+| ------------------- | ----------------------------------------- |
+| Blog Topic          | Main subject of the article               |
+| Blog Description    | Additional context or content direction   |
+| Target Audience     | Intended readers                          |
+| Tone                | Formal / Informal / Technical / Narrative |
+| Blog Length         | Short / Medium / Long                     |
+| Keywords (Optional) | SEO or focus keywords                     |
 
 ---
 
-## Evaluation Criteria
+# 📤 Outputs
 
-- Relevance of content to topic and description  
-- Semantic alignment between images and paragraphs  
-- UI usability and clarity  
-- End-to-end working flow  
-- Code quality and modularity  
-
----
-
-## Expected Outcome
-
-A functional AI-powered blog generation web application that produces both text and images from a single blog description.
+* **Blog Title** — Automatically generated
+* **Structured Article** — Introduction + multiple sections
+* **AI-Generated Images** — One per paragraph, semantically aligned
+* **Live Preview** — Displayed instantly in browser
+* **Export Options** — HTML / Markdown / PDF
 
 ---
 
-## System Architecture
+# ⚙️ How It Works
 
-### Frontend
-- HTML5
-- CSS3
-- Responsive form-based UI
-- Blog preview rendering
+```
+User Input Form
+        ↓
+Flask Backend Processes Input
+        ↓
+AI Model Generates Blog Content
+        ↓
+Each Paragraph → Image Generation Model
+        ↓
+Text + Images Combined via Jinja2 Templates
+        ↓
+Rendered Blog Preview in Browser
+```
+
+---
+
+# 🛠️ Tech Stack
 
 ### Backend
-- Python Flask application
-- Handles blog content and image generation
-- Uses Jinja templates for dynamic rendering
 
----
-
-## Tech Stack
-
-### Backend
-- Python 3.x  
-- Flask  
-- Jinja2  
+* Python 3.x
+* Flask
+* Jinja2
 
 ### Frontend
-- HTML5  
-- CSS3  
+
+* HTML5
+* CSS3
+
+### AI Integration
+
+* Text Generation Models
+* Image Generation Models
 
 ### Tooling
-- Git and GitHub  
-- Environment variables (`.env`)  
+
+* Git & GitHub
+* Environment Variables (`.env`)
 
 ---
 
-## Project Structure
+# 📁 Project Structure
+
 ```
-AI-BLOG-GENERATOR/
+AI_BLOG_GENERATOR/
 │
 ├── templates/
-│   └── index.html        # Main UI and blog preview template
+│   └── index.html        # Input form + blog preview UI
 │
-├── app.py              # Flask backend entry point
-├── requirements.txt      # Python dependencies
+├── tests/                # Unit and integration tests
+├── app.py                # Main Flask application
+├── requirements.txt      # Project dependencies
 ├── .env                  # Environment variables
 ├── README.md             # Project documentation
 └── .gitignore
-
 ```
 
 ---
 
-## How the Application Works
+# 🚀 Getting Started
 
-1. User opens the web application.
-2. Enters the blog topic and description.
-3. Selects target audience, tone, and blog length.
-4. Optionally adds keywords.
-5. Clicks **Generate Blog**.
-6. Backend generates structured blog text and AI-generated images.
-7. Each paragraph is displayed with its corresponding image.
-8. Blog is previewed on the same page.
+## Prerequisites
+
+* Python 3.9+
+* pip
+* Modern web browser
 
 ---
 
-## Quick Start (Local Development)
-
-### Prerequisites
-
-- Python 3.9+
-- pip
-- Modern web browser
-
----
-
-### Step 1: Clone the Repository
+## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/ai-blog-generator-agent.git
-cd ai-blog-generator-agent
-
+git clone https://github.com/KMMythriGowda/AI_Blog_Generator.git
+cd AI_Blog_Generator
 ```
-### Step 2: Install Dependencies
+
+---
+
+## 2. Install Dependencies
 
 ```bash
-pip install flask python-dotenv
+pip install -r requirements.txt
 ```
-### Step 3: Configure Environment Variables
 
-Create a .env file in the root directory:
+---
+
+## 3. Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```
 FLASK_ENV=development
 FLASK_DEBUG=True
+# Add your AI API keys below
+# OPENAI_API_KEY=your_key_here
+```
 
-Add AI API keys here if required
+---
 
-### Step 4: Run the Application
+## 4. Run the Application
+
+```bash
 python app.py
-The application will be available at:
-http://127.0.0.1:5000
+```
 
-### Edge Cases and Limitations
-## Positive Cases
-- Short and medium blog inputs generate results quickly
+Open your browser and visit:
+👉 http://127.0.0.1:5000
 
-- Paragraph–image alignment is preserved
+---
 
-- UI works well on desktop browsers
+# ✅ What Works Well
 
-### Limitations
-- Very long blogs may increase generation time
+* Fast generation for short and medium-length blogs
+* Accurate paragraph-to-image alignment
+* Clean and responsive UI on desktop
+* Relevant and structured content output
 
-- Image quality depends on the AI image model
+---
 
-- Export format may be limited initially
+# ⚠️ Known Limitations
 
-- Requires internet access if external AI services are used
+* Longer blogs increase generation time due to multiple AI calls
+* Image quality depends on the underlying AI model
+* Export options may be limited in current version
+* Requires internet connection for AI services
 
-## Future Requirements
+---
 
-- Include AI-generated images aligned with each blog paragraph  
+# 🔮 Planned Improvements
 
-- Ensure semantic matching between paragraph content and images  
+* Higher-quality and more context-aware image generation
+* Regenerate specific paragraphs or images
+* Full export support with embedded images (HTML + PDF)
+* Improved mobile responsiveness
+* User authentication and saved blog history
 
-- Support regeneration of individual images  
+---
 
-- Improve image quality and resolution  
+# 🤝 Contributing
 
-- Add support for exporting blogs with embedded images (HTML / PDF)  
+Contributions are welcome!
 
+* Fork the repository and submit pull requests
+* Open issues for bugs, suggestions, or improvements
+* Maintain consistency with existing code structure
 
-### Contributing
+---
 
-Contributions are welcome.
+# 👩‍💻 Author
 
-You may:
+**K M Mythri Gowda**
 
-    - Submit pull requests for improvements or features
+---
 
-    - Open issues for bugs or suggestions
-
-    - Improve UI, performance, or documentation
-
-Please ensure contributions follow the existing project structure.
-
-### Authors
-Swayampakam Sathvika Bramhani
-
-Kankanala Harshitha Reddy
-
-Under the guidance and support of Coriolis 
-
-
-### License
+# 📄 License
 
 This project is licensed under the **MIT License**.
-See the LICENSE file for details.
 
-### Acknowledgments
+---
 
-- Flask open-source community
+# 🙏 Acknowledgements
 
-- AI text and image generation research community
+* Flask and the open-source Python community
+* AI research community for text and image generation
+* Hackathon organizers and mentors
+* Open web standards (HTML & CSS)
 
-- Hackathon organizers and mentors
-
-- Open web standards (HTML & CSS)
-
-
-
-
+---
