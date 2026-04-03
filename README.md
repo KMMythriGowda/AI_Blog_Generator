@@ -1,4 +1,4 @@
-# 📌 AI Blog Generator Agent (Web App)
+# 📌 AI Blog Generator Agent
 
 AI Blog Generator is a full-stack web application that automates the end-to-end creation of structured blog content. The system accepts user-defined inputs and leverages AI to generate a well-organized article.
 
