@@ -1,43 +1,46 @@
 # 📌 AI Blog Generator Agent (Web App)
 
-AI Blog Generator is a web application designed to automate the end-to-end creation of structured blog content. The system accepts a user-defined topic and contextual parameters, then leverages AI to produce a coherent, well-organized article accompanied by semantically relevant images for each section.
+AI Blog Generator is a full-stack web application that automates the end-to-end creation of structured blog content. The system accepts user-defined inputs and leverages AI to generate a well-organized article.
 
-The application addresses the challenge of content creation at scale by eliminating the need for manual writing and visual sourcing. It is built with a modular Flask backend, a responsive web interface, and integrates AI-based text and image generation into a unified workflow.
+This project is enhanced with **CRUD functionality (Create, Read, Update, Delete)**, allowing users not only to generate blogs but also to manage them efficiently.
 
 ---
 
 # 🎯 What It Does
 
-Most blog creation tools either assist with writing or provide visuals — rarely both. This application combines both capabilities seamlessly:
+Unlike traditional tools that only assist with writing, this application provides a complete workflow:
 
-* Accepts a topic, description, audience, tone, and length as input
-* Generates a complete blog with title, introduction, and structured sections
-* Creates AI-generated images for every paragraph, placed contextually
-* Displays a live preview on the same page
-* Allows exporting the blog for external use
+- Accepts topic, description, audience, tone, and length  
+- Generates structured blog content using AI  
+- Displays blog in a clean UI  
+- Saves generated blogs to a database  
+- Allows users to:
+  - ✏️ Edit blogs (Update)
+  - 🗑️ Delete blogs (Delete)
+  - 📚 View all saved blogs (Read)
 
 ---
 
 # 🖊️ Inputs
 
 | Field               | Description                               |
-| ------------------- | ----------------------------------------- |
-| Blog Topic          | Main subject of the article               |
-| Blog Description    | Additional context or content direction   |
-| Target Audience     | Intended readers                          |
-| Tone                | Formal / Informal / Technical / Narrative |
-| Blog Length         | Short / Medium / Long                     |
-| Keywords (Optional) | SEO or focus keywords                     |
+|--------------------|-------------------------------------------|
+| Blog Topic         | Main subject of the article               |
+| Blog Description   | Additional context or direction           |
+| Target Audience    | Intended readers                          |
+| Tone               | Formal / Professional / Conversational    |
+| Blog Length        | Short / Medium / Long                     |
+| Keywords (Optional)| SEO keywords                             |
 
 ---
 
 # 📤 Outputs
 
-* **Blog Title** — Automatically generated
-* **Structured Article** — Introduction + multiple sections
-* **AI-Generated Images** — One per paragraph, semantically aligned
-* **Live Preview** — Displayed instantly in browser
-* **Export Options** — HTML / Markdown / PDF
+- **Blog Title** — AI-generated  
+- **Structured Content** — Introduction + sections  
+- **Formatted Blog Preview** — Rendered using HTML  
+- **Stored Blogs** — Saved for future access  
+- **Editable Content** — Modify previously generated blogs  
 
 ---
 
@@ -46,41 +49,40 @@ Most blog creation tools either assist with writing or provide visuals — rarel
 ```
 User Input Form
         ↓
-Flask Backend Processes Input
+Flask Backend Receives Data
         ↓
-AI Model Generates Blog Content
+Prompt is Generated
         ↓
-Each Paragraph → Image Generation Model
+Google Gemini API Generates Blog Content
         ↓
-Text + Images Combined via Jinja2 Templates
+Markdown → HTML Conversion
         ↓
-Rendered Blog Preview in Browser
+Blog Saved to Database (SQLite)
+        ↓
+Displayed via Jinja Templates
 ```
 
 ---
 
 # 🛠️ Tech Stack
 
-### Backend
+## Backend
+- Python 3.x  
+- Flask  
+- SQLite (for CRUD operations)  
+- Flask-Limiter (rate limiting)
 
-* Python 3.x
-* Flask
-* Jinja2
+## Frontend
+- HTML5  
+- CSS3  
+- Jinja2 Templates  
 
-### Frontend
+## AI Integration
+- Google Gemini API (Text Generation)
 
-* HTML5
-* CSS3
-
-### AI Integration
-
-* Text Generation Models
-* Image Generation Models
-
-### Tooling
-
-* Git & GitHub
-* Environment Variables (`.env`)
+## Tooling
+- Git & GitHub  
+- Environment Variables (`.env`)  
 
 ---
 
@@ -90,14 +92,16 @@ Rendered Blog Preview in Browser
 AI_BLOG_GENERATOR/
 │
 ├── templates/
-│   └── index.html        # Input form + blog preview UI
+│   ├── index.html        # Input form + blog preview
+│   ├── blogs.html        # View all saved blogs
+│   └── edit.html         # Edit blog page
 │
-├── tests/                # Unit and integration tests
-├── app.py                # Main Flask application
-├── requirements.txt      # Project dependencies
-├── .env                  # Environment variables
-├── README.md             # Project documentation
-└── .gitignore
+├── tests/                # (Optional testing files)
+├── app.py                # Main Flask application (CRUD + AI)
+├── requirements.txt      # Dependencies
+├── .env                  # Environment variables (NOT pushed)
+├── README.md             # Documentation
+├── .gitignore
 ```
 
 ---
@@ -106,16 +110,16 @@ AI_BLOG_GENERATOR/
 
 ## Prerequisites
 
-* Python 3.9+
-* pip
-* Modern web browser
+- Python 3.9+
+- pip
+- Internet connection (for AI API)
 
 ---
 
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/KMMythriGowda/AI_Blog_Generator.git
+git clone https://github.com/your-username/AI_Blog_Generator.git
 cd AI_Blog_Generator
 ```
 
@@ -131,13 +135,13 @@ pip install -r requirements.txt
 
 ## 3. Configure Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file:
 
 ```
 FLASK_ENV=development
 FLASK_DEBUG=True
-# Add your AI API keys below
-# OPENAI_API_KEY=your_key_here
+GOOGLE_API_KEY=your_api_key_here
+FLASK_SECRET=your_secret_key
 ```
 
 ---
@@ -148,36 +152,48 @@ FLASK_DEBUG=True
 python app.py
 ```
 
-Open your browser and visit:
+Open:
 👉 http://127.0.0.1:5000
+
+---
+
+# 🔄 CRUD Functionality
+
+| Operation | Feature |
+|----------|--------|
+| Create   | Generate and save blog |
+| Read     | View all blogs |
+| Update   | Edit blog content |
+| Delete   | Remove blog |
 
 ---
 
 # ✅ What Works Well
 
-* Fast generation for short and medium-length blogs
-* Accurate paragraph-to-image alignment
-* Clean and responsive UI on desktop
-* Relevant and structured content output
+- Clean and responsive UI  
+- Fast generation for short/medium blogs  
+- Persistent storage using database  
+- Full CRUD workflow implemented  
+- Rate limiting for controlled usage  
 
 ---
 
 # ⚠️ Known Limitations
 
-* Longer blogs increase generation time due to multiple AI calls
-* Image quality depends on the underlying AI model
-* Export options may be limited in current version
-* Requires internet connection for AI services
+- Longer blogs take more time (API dependent)  
+- No authentication (all users share same data)  
+- Image generation not fully implemented (optional enhancement)  
+- Requires internet for AI API  
 
 ---
 
-# 🔮 Planned Improvements
+# 🔮 Future Improvements
 
-* Higher-quality and more context-aware image generation
-* Regenerate specific paragraphs or images
-* Full export support with embedded images (HTML + PDF)
-* Improved mobile responsiveness
-* User authentication and saved blog history
+- Add AI image generation per paragraph  
+- Export blog as PDF/HTML  
+- User login system  
+- Blog history per user  
+- Improved UI/UX (mobile responsive)  
 
 ---
 
@@ -185,9 +201,9 @@ Open your browser and visit:
 
 Contributions are welcome!
 
-* Fork the repository and submit pull requests
-* Open issues for bugs, suggestions, or improvements
-* Maintain consistency with existing code structure
+- Fork the repository  
+- Create a new branch  
+- Submit a pull request  
 
 ---
 
@@ -205,9 +221,19 @@ This project is licensed under the **MIT License**.
 
 # 🙏 Acknowledgements
 
-* Flask and the open-source Python community
-* AI research community for text and image generation
-* Hackathon organizers and mentors
-* Open web standards (HTML & CSS)
+- Flask open-source community  
+- Google Gemini AI  
+- Hackathon mentors and organizers  
+- Open web standards (HTML, CSS)  
 
 ---
+
+# 🏆 Final Note
+
+This project demonstrates:
+
+- Full-stack web development  
+- API integration  
+- CRUD operations  
+- Clean UI design  
+- Practical problem-solving  
